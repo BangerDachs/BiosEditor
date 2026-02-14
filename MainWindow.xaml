@@ -1,0 +1,110 @@
+﻿<Window x:Class="BiosEditor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="BIOS Hex Tool" Height="760" Width="1300"
+        FontFamily="Consolas">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2.2*"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Top Buttons -->
+        <DockPanel Grid.Row="0" Grid.ColumnSpan="3" LastChildFill="False">
+            <Button Width="140" Margin="0,0,10,0" Content="Öffnen (.bin/.rom)" Click="BtnOpen_Click"/>
+            <Button Width="140" Margin="0,0,10,0" Content="Speichern unter..." Click="BtnSaveAs_Click"/>
+            <Button Width="140" Content="Änderung anwenden" Click="BtnApply_Click"/>
+            <Button Width="170" Margin="10,0,0,0" Content="Übersetzt bearbeiten" Click="BtnTranslated_Click"/>
+
+            <Button Width="140" Margin="10,0,0,0" Content="Scan Werte" Click="BtnScan_Click"/>
+            <Button Width="200" Margin="10,0,0,0" Content="Auswahl → Übersetzt" Click="BtnSendToTranslated_Click"/>
+        </DockPanel>
+
+        <!-- Info + Jump -->
+        <Grid Grid.Row="1" Grid.ColumnSpan="3" Margin="0,10,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="240"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock x:Name="TxtInfo" VerticalAlignment="Center" />
+
+            <TextBlock Grid.Column="1" Margin="20,0,8,0" VerticalAlignment="Center" Text="Jump Offset (hex):"/>
+            <TextBox Grid.Column="2" x:Name="TxtJumpOffset" Height="28" VerticalContentAlignment="Center"
+                     ToolTip="z.B. 1A2B0 oder 0x1A2B0"/>
+            <Button Grid.Column="3" Margin="8,0,0,0" Width="90" Content="Go" Click="BtnGo_Click"/>
+        </Grid>
+
+        <!-- Hex Lines -->
+        <Border Grid.Row="2" Grid.Column="0" BorderBrush="#444" BorderThickness="1" CornerRadius="6">
+            <ListBox x:Name="HexList"
+                     SelectionChanged="HexList_SelectionChanged"
+                     PreviewMouseWheel="HexList_PreviewMouseWheel"
+                     BorderThickness="0"
+                     FontSize="13"
+                     ScrollViewer.VerticalScrollBarVisibility="Auto"
+                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                     ScrollViewer.CanContentScroll="True"/>
+        </Border>
+
+        <!-- Right side -->
+        <StackPanel Grid.Row="2" Grid.Column="2">
+
+            <GroupBox Header="ATOM Tabellen">
+                <ListBox x:Name="AtomList"
+                         Height="220"
+                         SelectionChanged="AtomList_SelectionChanged"/>
+            </GroupBox>
+
+            <GroupBox Header="Gefundene Werte (Kandidaten)" Margin="0,10,0,0">
+                <ListBox x:Name="ValueList"
+                         Height="320"
+                         SelectionChanged="ValueList_SelectionChanged"/>
+            </GroupBox>
+
+            <TextBlock x:Name="TxtValueInfo" Margin="0,10,0,0" TextWrapping="Wrap"/>
+        </StackPanel>
+
+        <!-- Bottom Editor -->
+        <Grid Grid.Row="3" Grid.ColumnSpan="3" Margin="0,10,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="140"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="140"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="220"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock VerticalAlignment="Center" Text="Offset:"/>
+            <TextBox Grid.Column="1" x:Name="TxtOffset" Height="28" Margin="8,0,20,0"
+                     VerticalContentAlignment="Center" IsReadOnly="True"/>
+
+            <TextBlock Grid.Column="2" VerticalAlignment="Center" Text="Alt (hex):"/>
+            <TextBox Grid.Column="3" x:Name="TxtOld" Height="28" Margin="8,0,20,0"
+                     VerticalContentAlignment="Center" IsReadOnly="True"/>
+
+            <TextBlock Grid.Column="4" VerticalAlignment="Center" Text="Neu (hex Byte 00..FF):"/>
+            <TextBox Grid.Column="5" x:Name="TxtNew" Height="28" Margin="8,0,0,0"
+                     VerticalContentAlignment="Center"/>
+
+            <TextBlock Grid.Column="6" x:Name="TxtStatus" VerticalAlignment="Center" Margin="12,0,0,0"/>
+        </Grid>
+
+        <!-- Hint row -->
+        <TextBlock Grid.Row="4" Grid.ColumnSpan="3" Margin="0,6,0,0" Opacity="0.75"
+                   Text="Hinweis: 'Gefundene Werte' sind heuristische Kandidaten aus ATOM Tabellen. Nicht jeder Treffer ist garantiert das echte Powerlimit."/>
+    </Grid>
+</Window>

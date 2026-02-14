@@ -1,0 +1,36 @@
+<Window x:Class="BiosEditor.TranslatedWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Übersetzte Werte" Height="520" Width="760"
+        FontFamily="Consolas">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <DataGrid x:Name="TranslatedGrid"
+                  ItemsSource="{Binding Fields}"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  HeadersVisibility="Column"
+                  GridLinesVisibility="Horizontal">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}" IsReadOnly="True" Width="160"/>
+                <DataGridTextColumn Header="Offset (hex)" Binding="{Binding OffsetHex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                <DataGridComboBoxColumn x:Name="TypeColumn" Header="Typ" SelectedItemBinding="{Binding DataType, Mode=TwoWay}" Width="100"/>
+                <DataGridTextColumn Header="Skalierung" Binding="{Binding Scale, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100"/>
+                <DataGridTextColumn Header="Wert" Binding="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,10,0,0">
+            <Button Width="140" Content="Aus ROM laden" Click="BtnLoad_Click"/>
+            <Button Width="160" Margin="10,0,0,0" Content="In ROM schreiben" Click="BtnApply_Click"/>
+        </StackPanel>
+
+        <TextBlock Grid.Row="2" x:Name="TxtStatus" Margin="0,8,0,0"/>
+    </Grid>
+</Window>
