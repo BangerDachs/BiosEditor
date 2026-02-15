@@ -107,12 +107,8 @@ namespace BiosEditor
                 return;
             }
 
-<<<<<<< Updated upstream
             // Kandidaten innerhalb der ATOM-Tabellen suchen
             _candidates = AtomBios.ScanCommonCandidates(_data, _atomTables);
-=======
-            _candidates = AtomBios.FindPowerLimitCandidatesScaled(_data, _atomTables, 304);
->>>>>>> Stashed changes
 
             // ohne LINQ:
             var lines = new System.Collections.Generic.List<string>();
