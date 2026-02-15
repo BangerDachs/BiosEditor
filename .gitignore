@@ -1,10 +1,14 @@
 # Build output
 bin/
 obj/
+publish/
 
 # Visual Studio
 .vs/
 *.user
+*.csproj.user
+*.vbproj.user
+*.vcxproj.user
 *.suo
 *.userosscache
 *.sln.docstates
@@ -21,6 +25,13 @@ packages/
 *.log
 *.tmp
 *.temp
+
+# Test
+TestResults/
+
+# Dotnet
+*.runtimeconfig.json
+*.deps.json
 
 # OS
 Thumbs.db
