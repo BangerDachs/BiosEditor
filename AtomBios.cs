@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace BiosEditor
 {
+    // Hilfsklassen und Funktionen zum Lesen einfacher ATOMBIOS-Strukturen.
     public sealed class AtomTableInfo
     {
         public int Index { get; set; }
@@ -26,6 +27,7 @@ namespace BiosEditor
 
     public sealed class ScanCandidate
     {
+        // Ergebnis eines einfachen Scans nach typischen Werten (Power/Voltage/Clock).
         public string Kind { get; set; }           // "Power", "Voltage", "Clock"
         public string Name { get; set; }           // "Power Limit (W) Candidate"
         public int TableIndex { get; set; }        // -1 wenn global
@@ -39,10 +41,12 @@ namespace BiosEditor
 
     public static class AtomBios
     {
+        // Standard-Base-Offset für Legacy-ATOMBIOS.
         public const int LegacyBase = 0x40000;
 
         public static bool TryGetAtomRomHeaderOffset(byte[] rom, out int atomHdrAbs)
         {
+            // Sucht den ATOM ROM Header anhand der "ATOM"-Signatur.
             atomHdrAbs = 0;
             if (rom == null || rom.Length < LegacyBase + 0x200) return false;
 
@@ -66,6 +70,7 @@ namespace BiosEditor
 
         public static bool TryGetMasterDataTableOffset(byte[] rom, out int masterDataAbs)
         {
+            // Ermittelt den Offset der Master Data Table aus dem ROM Header.
             masterDataAbs = 0;
 
             int atomHdrAbs;
@@ -83,6 +88,7 @@ namespace BiosEditor
 
         public static AtomTableInfo[] ListDataTables(byte[] rom)
         {
+            // Listet alle Table-Einträge aus der Master Data Table.
             if (rom == null || rom.Length == 0) return new AtomTableInfo[0];
 
             int mdAbs;
@@ -124,6 +130,7 @@ namespace BiosEditor
         // --- Low-level scan helpers ---
         public static List<int> FindAllUInt16InRegion(byte[] data, int startAbs, int length, ushort value)
         {
+            // Findet alle Positionen eines UInt16-Werts in einem Bereich.
             var results = new List<int>();
             if (data == null || data.Length < 2) return results;
             if (startAbs < 0) startAbs = 0;
@@ -148,7 +155,7 @@ namespace BiosEditor
             string kind, string unit, int min, int max, int maxPerKind,
             List<ScanCandidate> outList)
         {
-            // Wir scannen bevorzugt in ATOM Tabellen (weniger Rauschen)
+            // scannen in ATOM Tabellen
             for (int ti = 0; ti < tables.Length; ti++)
             {
                 var t = tables[ti];
@@ -207,15 +214,12 @@ namespace BiosEditor
             }
         }
 
-        /// <summary>
-        /// Heuristischer Scan: findet plausible Werte in ATOM Tabellen und zeigt sie als Kandidaten an.
-        /// </summary>
         public static List<ScanCandidate> ScanCommonCandidates(byte[] rom, AtomTableInfo[] tables)
         {
+            // Sucht typische Wertebereiche (Power/Voltage/Clock) als Kandidaten.
             var result = new List<ScanCandidate>();
             if (rom == null || tables == null) return result;
 
-            // Typische Bereiche (kannst du später feintunen):
             // Power in Watt: 150..600
             // Voltage in mV: 600..1600
             // Clocks in MHz: 500..4000
@@ -228,6 +232,7 @@ namespace BiosEditor
 
         public static bool TryReadUInt16(byte[] data, int offsetAbs, out ushort value)
         {
+            // Liest einen UInt16-Wert an absoluter Position.
             value = 0;
             if (data == null) return false;
             if (offsetAbs < 0 || offsetAbs + 1 >= data.Length) return false;
@@ -237,6 +242,7 @@ namespace BiosEditor
 
         public static bool TryWriteUInt16(byte[] data, int offsetAbs, ushort value)
         {
+            // Schreibt einen UInt16-Wert an absolute Position.
             if (data == null) return false;
             if (offsetAbs < 0 || offsetAbs + 1 >= data.Length) return false;
             byte[] b = BitConverter.GetBytes(value);

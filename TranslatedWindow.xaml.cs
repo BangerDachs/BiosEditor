@@ -32,6 +32,7 @@ namespace BiosEditor
 
         private void BtnLoad_Click(object sender, RoutedEventArgs e)
         {
+            // Liest Werte aus dem RAM-Buffer anhand der Offsets.
             int updated = 0;
 
             foreach (var field in Fields)
@@ -57,6 +58,7 @@ namespace BiosEditor
 
         private void BtnApply_Click(object sender, RoutedEventArgs e)
         {
+            // Schreibt die geänderten Werte zurück in den RAM-Buffer.
             int updated = 0;
 
             foreach (var field in Fields)
@@ -82,6 +84,7 @@ namespace BiosEditor
 
         private static bool TryReadUInt(byte[] data, int offset, FieldDataType dataType, out uint value)
         {
+            // Liest abhängig vom Datentyp Byte/UInt16/UInt32.
             value = 0;
             if (data == null) return false;
             if (offset < 0 || offset >= data.Length) return false;
@@ -109,6 +112,7 @@ namespace BiosEditor
 
         private static bool TryWriteUInt(byte[] data, int offset, FieldDataType dataType, uint value)
         {
+            // Schreibt abhängig vom Datentyp Byte/UInt16/UInt32.
             if (data == null) return false;
             if (offset < 0 || offset >= data.Length) return false;
 
@@ -137,6 +141,7 @@ namespace BiosEditor
 
         private static bool TryParseHexInt(string s, out int value)
         {
+            // Hex-String (z. B. "0x1A2") in Int umwandeln.
             value = 0;
             if (string.IsNullOrWhiteSpace(s)) return false;
 
@@ -149,6 +154,7 @@ namespace BiosEditor
 
         public enum FieldDataType
         {
+            // Datentypen, die im UI auswählbar sind.
             Byte,
             UInt16,
             UInt32
@@ -173,6 +179,7 @@ namespace BiosEditor
 
         public void AddOrUpdateField(string name, string offsetHex, FieldDataType dataType, double scale, double initialValue)
         {
+            // Fügt einen Eintrag hinzu oder aktualisiert ihn, falls er bereits existiert.
             // existiert schon?
             for (int i = 0; i < Fields.Count; i++)
             {

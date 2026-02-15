@@ -1,0 +1,16 @@
+C:\Users\NordA\source\repos\BIOSEditor\BIOSEditor\bin\Debug\BIOSEditor.exe.config
+C:\Users\NordA\source\repos\BIOSEditor\BIOSEditor\bin\Debug\BIOSEditor.exe
+C:\Users\NordA\source\repos\BIOSEditor\BIOSEditor\bin\Debug\BIOSEditor.pdb
+C:\Users\NordA\source\repos\BIOSEditor\BIOSEditor\obj\Debug\BIOSEditor.csproj.AssemblyReference.cache
+C:\Users\NordA\source\repos\BIOSEditor\BIOSEditor\obj\Debug\MainWindow.baml
+C:\Users\NordA\source\repos\BIOSEditor\BIOSEditor\obj\Debug\TranslatedWindow.baml
+C:\Users\NordA\source\repos\BIOSEditor\BIOSEditor\obj\Debug\MainWindow.g.cs
+C:\Users\NordA\source\repos\BIOSEditor\BIOSEditor\obj\Debug\TranslatedWindow.g.cs
+C:\Users\NordA\source\repos\BIOSEditor\BIOSEditor\obj\Debug\App.g.cs
+C:\Users\NordA\source\repos\BIOSEditor\BIOSEditor\obj\Debug\BIOSEditor_MarkupCompile.cache
+C:\Users\NordA\source\repos\BIOSEditor\BIOSEditor\obj\Debug\BIOSEditor.g.resources
+C:\Users\NordA\source\repos\BIOSEditor\BIOSEditor\obj\Debug\BIOSEditor.Properties.Resources.resources
+C:\Users\NordA\source\repos\BIOSEditor\BIOSEditor\obj\Debug\BIOSEditor.csproj.GenerateResource.cache
+C:\Users\NordA\source\repos\BIOSEditor\BIOSEditor\obj\Debug\BIOSEditor.csproj.CoreCompileInputs.cache
+C:\Users\NordA\source\repos\BIOSEditor\BIOSEditor\obj\Debug\BIOSEditor.exe
+C:\Users\NordA\source\repos\BIOSEditor\BIOSEditor\obj\Debug\BIOSEditor.pdb

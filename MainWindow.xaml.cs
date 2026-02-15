@@ -27,7 +27,9 @@ namespace BiosEditor
 
         private void UpdateUiState()
         {
+            // Aktiviert/Deaktiviert UI-Elemente je nachdem, ob eine Datei geladen ist.
             bool hasData = _data != null && _data.Length > 0;
+            // Status und Info Text aktualisieren
             TxtInfo.Text = hasData
                 ? $"Datei: {(_loadedPath ?? "(unsaved)")}\nGröße: {_data.Length:N0} Bytes\nLegacyBase: 0x{AtomBios.LegacyBase:X}"
                 : "Keine Datei geladen.";
@@ -38,6 +40,7 @@ namespace BiosEditor
 
         private void BtnSetEnabled(bool enabled)
         {
+            // Buttons und Eingabefelder je nach Dateistatus aktivieren.
             foreach (var btn in FindVisualChildren<Button>(this))
             {
                 if (btn.Content != null && (btn.Content.ToString() == "Speichern unter..." || btn.Content.ToString() == "Änderung anwenden"))
@@ -50,6 +53,7 @@ namespace BiosEditor
 
         private static System.Collections.Generic.IEnumerable<T> FindVisualChildren<T>(DependencyObject depObj) where T : DependencyObject
         {
+            // Rekursive Suche nach WPF-Steuerelementen im Visual Tree.
             if (depObj == null) yield break;
             for (int i = 0; i < System.Windows.Media.VisualTreeHelper.GetChildrenCount(depObj); i++)
             {
@@ -62,6 +66,7 @@ namespace BiosEditor
 
         private void BtnOpen_Click(object sender, RoutedEventArgs e)
         {
+            // Datei auswählen und in den Speicher laden.
             var dlg = new OpenFileDialog
             {
                 Filter = "BIOS Dateien (*.bin;*.rom)|*.bin;*.rom|Alle Dateien (*.*)|*.*",
@@ -73,6 +78,7 @@ namespace BiosEditor
             _loadedPath = dlg.FileName;
             _data = File.ReadAllBytes(dlg.FileName);
 
+            // Hex Ansicht und Tabellen neu aufbauen
             BuildHexView();
 
             _atomTables = AtomBios.ListDataTables(_data);
@@ -93,6 +99,7 @@ namespace BiosEditor
 
         private void BtnScan_Click(object sender, RoutedEventArgs e)
         {
+            // Scan nach typischen Werten in ATOM-Tabellen.
             if (_data == null) return;
             if (_atomTables == null || _atomTables.Length == 0)
             {
@@ -100,6 +107,7 @@ namespace BiosEditor
                 return;
             }
 
+            // Kandidaten innerhalb der ATOM-Tabellen suchen
             _candidates = AtomBios.ScanCommonCandidates(_data, _atomTables);
 
             // Anzeige
@@ -111,6 +119,7 @@ namespace BiosEditor
 
         private void BtnSendToTranslated_Click(object sender, RoutedEventArgs e)
         {
+            // Ausgewählten Kandidaten in das Übersetzungsfenster übernehmen.
             if (_data == null) return;
             if (_candidates == null || _candidates.Count == 0) return;
             if (ValueList.SelectedIndex < 0 || ValueList.SelectedIndex >= _candidates.Count)
@@ -136,12 +145,14 @@ namespace BiosEditor
 
             w.ShowDialog();
 
+            // Hex Ansicht nach Änderungen aktualisieren
             BuildHexView();
             UpdateUiState();
         }
 
         private void BtnSaveAs_Click(object sender, RoutedEventArgs e)
         {
+            // Aktuelle Daten in eine neue Datei schreiben.
             if (_data == null) return;
 
             var dlg = new SaveFileDialog
@@ -161,9 +172,11 @@ namespace BiosEditor
 
         private void BuildHexView()
         {
+            // Erzeugt die Hex-/ASCII-Ansicht für die geladene Datei.
             HexList.Items.Clear();
             if (_data == null) return;
 
+            // Hex und ASCII Darstellung zeilenweise erzeugen
             int lines = (_data.Length + BytesPerLine - 1) / BytesPerLine;
 
             for (int line = 0; line < lines; line++)
@@ -191,6 +204,7 @@ namespace BiosEditor
 
         private void AtomList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            // Springt zur ausgewählten ATOM-Tabelle im Hex-View.
             if (_data == null) return;
 
             var t = AtomList.SelectedItem as AtomTableInfo;
@@ -202,6 +216,7 @@ namespace BiosEditor
 
         private void ValueList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            // Springt zur ausgewählten Kandidatenstelle im Hex-View.
             if (_data == null) return;
             if (_candidates == null || _candidates.Count == 0) return;
 
@@ -229,6 +244,7 @@ namespace BiosEditor
 
         private void JumpToOffset(int offset)
         {
+            // Setzt die Auswahl auf eine bestimmte Offset-Position.
             if (_data == null) return;
             if (offset < 0 || offset >= _data.Length) return;
 
@@ -245,6 +261,7 @@ namespace BiosEditor
 
         private void HexList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            // Wenn eine Zeile gewählt wird, den aktuellen Bytewert anzeigen.
             if (_data == null) return;
 
             var line = HexList.SelectedItem as HexLineItem;
@@ -262,6 +279,7 @@ namespace BiosEditor
 
         private void HexList_PreviewMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
         {
+            // Eigene Scroll-Logik für das Hex-ListBox-Scrolling.
             var listBox = sender as ListBox;
             if (listBox == null) return;
 
@@ -276,6 +294,7 @@ namespace BiosEditor
 
         private void BtnApply_Click(object sender, RoutedEventArgs e)
         {
+            // Ein einzelnes Byte im RAM-Buffer ändern.
             if (_data == null) return;
 
             int offset;
@@ -301,6 +320,7 @@ namespace BiosEditor
             byte oldVal = _data[offset];
             _data[offset] = newVal;
 
+            // UI aktualisieren und aktuelle Zeile erneut selektieren
             TxtOld.Text = oldVal.ToString("X2");
             TxtStatus.Text = string.Format("Byte geändert @ 0x{0:X}: {1:X2} -> {2:X2}", offset, oldVal, newVal);
 
@@ -312,6 +332,7 @@ namespace BiosEditor
 
         private void BtnTranslated_Click(object sender, RoutedEventArgs e)
         {
+            // Öffnet das Übersetzungsfenster für strukturierte Werte.
             if (_data == null) return;
 
             var window = new TranslatedWindow(_data)
@@ -321,12 +342,14 @@ namespace BiosEditor
 
             window.ShowDialog();
 
+            // Hex Ansicht nach Änderungen aktualisieren
             BuildHexView();
             UpdateUiState();
         }
 
         private void BtnGo_Click(object sender, RoutedEventArgs e)
         {
+            // Springt zur eingegebenen Hex-Offset-Position.
             if (_data == null) return;
 
             int offset;
@@ -348,6 +371,7 @@ namespace BiosEditor
 
         private static bool TryParseHexByte(string s, out byte value)
         {
+            // Hex-String (z. B. "FF") in Byte umwandeln.
             value = 0;
             if (string.IsNullOrWhiteSpace(s)) return false;
 
@@ -359,6 +383,7 @@ namespace BiosEditor
 
         private static bool TryParseHexInt(string s, out int value)
         {
+            // Hex-String (z. B. "0x1A2") in Int umwandeln.
             value = 0;
             if (string.IsNullOrWhiteSpace(s)) return false;
 
