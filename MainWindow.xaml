@@ -2,7 +2,8 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="BIOS Hex Tool" Height="760" Width="1300"
-        FontFamily="Consolas">
+        FontFamily="Consolas"
+        Background="gray">
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -55,7 +56,7 @@
                      FontSize="13"
                      ScrollViewer.VerticalScrollBarVisibility="Auto"
                      ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                     ScrollViewer.CanContentScroll="True"/>
+                     ScrollViewer.CanContentScroll="True" Background="LightGray"/>
         </Border>
 
         <!-- Right side -->
@@ -64,13 +65,13 @@
             <GroupBox Header="ATOM Tabellen">
                 <ListBox x:Name="AtomList"
                          Height="220"
-                         SelectionChanged="AtomList_SelectionChanged"/>
+                         SelectionChanged="AtomList_SelectionChanged" Background="LightGray"/>
             </GroupBox>
 
             <GroupBox Header="Gefundene Werte (Kandidaten)" Margin="0,10,0,0">
                 <ListBox x:Name="ValueList"
                          Height="320"
-                         SelectionChanged="ValueList_SelectionChanged"/>
+                         SelectionChanged="ValueList_SelectionChanged" Background="LightGray"/>
             </GroupBox>
 
             <TextBlock x:Name="TxtValueInfo" Margin="0,10,0,0" TextWrapping="Wrap"/>

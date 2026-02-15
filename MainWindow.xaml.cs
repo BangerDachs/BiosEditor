@@ -107,15 +107,33 @@ namespace BiosEditor
                 return;
             }
 
+<<<<<<< Updated upstream
             // Kandidaten innerhalb der ATOM-Tabellen suchen
             _candidates = AtomBios.ScanCommonCandidates(_data, _atomTables);
+=======
+            _candidates = AtomBios.FindPowerLimitCandidatesScaled(_data, _atomTables, 304);
+>>>>>>> Stashed changes
 
-            // Anzeige
-            ValueList.ItemsSource = _candidates.Select(c => c.Display).ToList();
+            // ohne LINQ:
+            var lines = new System.Collections.Generic.List<string>();
+            for (int i = 0; i < _candidates.Count; i++)
+                lines.Add(_candidates[i].Display);
 
-            TxtStatus.Text = "Scan fertig: " + _candidates.Count + " Kandidaten.";
-            TxtValueInfo.Text = "Tipp: Kandidat anklicken → Jump im Hex. Danach 'Auswahl → Übersetzt' zum Bearbeiten.";
+            ValueList.ItemsSource = lines;
+
+            if (_candidates.Count > 0)
+            {
+                TxtStatus.Text = "304W Kandidaten gefunden: " + _candidates.Count;
+                ValueList.SelectedIndex = 0;
+                JumpToOffset(_candidates[0].OffsetAbs);
+            }
+            else
+            {
+                TxtStatus.Text = "Kein 304W Kandidat gefunden (auch nicht skaliert). Dann ist es evtl. NICHT als Literal gespeichert.";
+            }
         }
+
+
 
         private void BtnSendToTranslated_Click(object sender, RoutedEventArgs e)
         {
