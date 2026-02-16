@@ -119,7 +119,7 @@ namespace BiosEditor
 
             if (_candidates.Count > 0)
             {
-                TxtStatus.Text = "304W Kandidaten gefunden: " + _candidates.Count;
+                TxtStatus.Text = "304W Kandidaten gefunden: " + _candidates.Count; // 304W, da meine GPU Stock 304W TDP hat
                 ValueList.SelectedIndex = 0;
                 JumpToOffset(_candidates[0].OffsetAbs);
             }
