@@ -27,4 +27,7 @@ Das Projekt ist noch nicht vollständig abgeschlossen, nicht Final... bei benutz
 
 Gerne auch Feedback da lassen :)
 
+![BiosEditor Screenshot](BE1.png)
+![BiosEditor Screenshot](BE2.png)
+
 !!!Änderungen an BIOS/ROM-Dateien erfolgen auf eigenes Risiko!!!!.
